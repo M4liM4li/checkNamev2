@@ -21,7 +21,7 @@ try {
     if (item.endsWith(".js")) {
       // เช็คว่าเป็นไฟล์ .js
       const route = require("./routes/" + item);
-      app.use("/api", route);
+      app.use("/", route);
     }
   });
 } catch (error) {
