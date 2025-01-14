@@ -3,7 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
-const attendanceRouter = require("./routes/attendanceRouter");
+const attendanceRouter = require("./routes/Attendance");
 
 //middleware
 app.use(morgan("dev"));
