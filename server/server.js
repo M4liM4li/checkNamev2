@@ -15,13 +15,19 @@ app.use(
     credentials: true,
   })
 );
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Server is running' });
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is running" });
 });
 
 app.use("/api", authRouter);
 app.use("/api", attendanceRouter);
-
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({
+    message: "Internal Server Error",
+    details: err.message, // สามารถส่งข้อความเพิ่มเติมจากข้อผิดพลาด
+  });
+});
 app.listen(5000, () => console.log("server running port 5000x"));
 
 module.exports = app;
