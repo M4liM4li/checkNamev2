@@ -19,4 +19,4 @@ app.use(
 app.use("/api", authRouter);
 app.use("/api", attendanceRouter);
 
-app.listen(5000, () => console.log("server running port 5000"));
+app.listen(5000, () => console.log("server running port 5000x"));
