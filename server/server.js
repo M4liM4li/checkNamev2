@@ -1,73 +1,49 @@
-const cors = require("cors");
 const express = require("express");
-const bodyParser = require("body-parser");
-const bcrypt = require("bcryptjs");
-const session = require("express-session");
-const connection = require("./config/db"); // นำเข้าการเชื่อมต่อฐานข้อมูล
-const authRoutes = require("./routes/auth");
-const attendanceRoutes = require("./routes/Attendance");
 const app = express();
-const port = 3000;
+const morgan = require("morgan");
+const { readdirSync } = require("fs");
+const cors = require("cors");
 
+// middleware
+app.use(morgan("dev"));
+app.use(express.json());
 app.use(
   cors({
-    origin: "*", // หรือ URL ของแอป React ของคุณ
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
-// Session configuration
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
 
-app.use(bodyParser.json());
-
-// Health check route
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Server is running" });
-});
-
-// ใช้งาน Routes
-
-app.use(authRoutes);
-app.use(authRoutes);
-// Logout route
-app.post("/api/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "เกิดข้อผิดพลาดในการออกจากระบบ",
-      });
+// โหลด routes ด้วย try-catch
+try {
+  readdirSync("./routes").map((item) => {
+    if (item.endsWith(".js")) {
+      // เช็คว่าเป็นไฟล์ .js
+      const route = require("./routes/" + item);
+      app.use("/api", route);
     }
-    res.status(200).json({
-      success: true,
-      message: "ออกจากระบบสำเร็จ",
-    });
   });
-});
+} catch (error) {
+  console.error("Error loading routes:", error);
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
-    success: false,
-    message: "เกิดข้อผิดพลาดในระบบ",
+    status: "error",
+    message: "Internal server error",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    status: "error",
+    message: "Route not found",
+  });
 });
 
-module.exports = app;
+app.listen(5000, () => console.log("server running port 5000"));
