@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
 const attendanceRouter = require("./routes/Attendance");
+const { readdirSync } = require("fs");
 
 //middleware
 app.use(morgan("dev"));
