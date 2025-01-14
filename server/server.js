@@ -4,7 +4,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
 const attendanceRouter = require("./routes/Attendance");
-const { readdirSync } = require("fs");
 
 //middleware
 app.use(morgan("dev"));
@@ -16,13 +15,12 @@ app.use(
     credentials: true,
   })
 );
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Server is running" });
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Server is running' });
 });
 
-readdirSync("./routes").map((item) =>
-  app.use("/api", require("./routes/" + item))
-);
+app.use("/api", authRouter);
+app.use("/api", attendanceRouter);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({
