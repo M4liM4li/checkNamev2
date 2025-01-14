@@ -17,8 +17,8 @@ app.use(
 );
 
 // Routes
-app.use("/api/auth", authRoutes); // Namespace for auth routes
-app.use("/api/attendance", attendanceRoutes); // Namespace for attendance routes
+app.use("/auth", authRoutes); // Namespace for auth routes
+app.use("/attendance", attendanceRoutes); // Namespace for attendance routes
 
 // Error handling middleware (placed after all routes)
 app.use((err, req, res, next) => {
