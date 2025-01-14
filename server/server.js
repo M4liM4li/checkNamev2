@@ -1,42 +1,73 @@
-const express = require("express");
-const app = express();
-const morgan = require("morgan");
 const cors = require("cors");
-const attendanceRoutes = require("./routes/Attendance");
+const express = require("express");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcryptjs");
+const session = require("express-session");
+const connection = require("./config/db"); // นำเข้าการเชื่อมต่อฐานข้อมูล
 const authRoutes = require("./routes/auth");
+const attendanceRoutes = require("./routes/Attendance");
+const app = express();
+const port = 3000;
 
-// Middleware setup
-app.use(morgan("dev"));
-app.use(express.json());
 app.use(
   cors({
-    origin: "*", // For testing, change to specific origin in production
+    origin: "*", // หรือ URL ของแอป React ของคุณ
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
+// Session configuration
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
-// Routes
-app.use("/auth", authRoutes); // Namespace for auth routes
-app.use("/attendance", attendanceRoutes); // Namespace for attendance routes
+app.use(bodyParser.json());
 
-// Error handling middleware (placed after all routes)
+// Health check route
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is running" });
+});
+
+// ใช้งาน Routes
+
+app.use(authRoutes);
+app.use(authRoutes);
+// Logout route
+app.post("/api/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "เกิดข้อผิดพลาดในการออกจากระบบ",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "ออกจากระบบสำเร็จ",
+    });
+  });
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
-    status: "error",
-    message: "Internal server error",
-    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+    success: false,
+    message: "เกิดข้อผิดพลาดในระบบ",
   });
 });
 
-// 404 handler (must be at the bottom)
-app.use((req, res) => {
-  res.status(404).json({
-    status: "error",
-    message: "Route not found",
-  });
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
 
-// Start the server
-app.listen(5000, () => console.log("Server running on port 5000"));
+module.exports = app;
