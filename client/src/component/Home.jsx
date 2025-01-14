@@ -19,7 +19,7 @@ const Home = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/listUsers`, {
+      const response = await fetch(`https://check-namev2-serverx.vercel.app/api/listUsers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
