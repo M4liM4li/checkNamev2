@@ -94,16 +94,6 @@ const Home = () => {
           <div className={style.cloud}></div>
           <div className={style.cloud}></div>
         </div>
-        <div className={style.cloud}>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-        </div>
-        <div className={style.cloud}>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-        </div>
         {/* แสดงข้อมูลผู้ใช้เสมอถ้ามีข้อมูล */}
         {userInfo && <UserProfile />}
 
