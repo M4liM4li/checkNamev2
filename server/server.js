@@ -1,23 +1,26 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const { readdirSync } = require("fs");
 const cors = require("cors");
 const attendanceRoutes = require("./routes/Attendance");
 const authRoutes = require("./routes/auth");
 
-// middleware
+// Middleware setup
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "*", // For testing, change to specific origin in production
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
 
-// Error handling middleware
+// Routes
+app.use("/api/auth", authRoutes); // Namespace for auth routes
+app.use("/api/attendance", attendanceRoutes); // Namespace for attendance routes
+
+// Error handling middleware (placed after all routes)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -26,10 +29,8 @@ app.use((err, req, res, next) => {
     error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
-app.use(authRoutes);
-app.use(attendanceRoutes);
 
-// 404 handler
+// 404 handler (must be at the bottom)
 app.use((req, res) => {
   res.status(404).json({
     status: "error",
@@ -37,4 +38,5 @@ app.use((req, res) => {
   });
 });
 
-app.listen(5000, () => console.log("server running port 5000"));
+// Start the server
+app.listen(5000, () => console.log("Server running on port 5000"));
