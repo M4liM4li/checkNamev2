@@ -3,23 +3,44 @@ const app = express();
 const morgan = require("morgan");
 const { readdirSync } = require("fs");
 const cors = require("cors");
-// const authRouter = require('./routes/auth')
-// const categoryRouter = require('./routes/category')
-//middleware
+
+// middleware
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*", // หรือ URL ของแอป React ของคุณ
+app.use(cors({
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
-  })
-);
+}));
 
-// app.use('/api', authRouter)
-// app.use('/api', categoryRouter)
-readdirSync("./routes").map((item) =>
-  app.use("/api", require("./routes/" + item))
-);
+// โหลด routes ด้วย try-catch
+try {
+    readdirSync("./routes").map((item) => {
+        if(item.endsWith('.js')) {  // เช็คว่าเป็นไฟล์ .js
+            const route = require("./routes/" + item);
+            app.use("/api", route);
+        }
+    });
+} catch (error) {
+    console.error('Error loading routes:', error);
+}
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        status: 'error',
+        message: 'Internal server error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({
+        status: 'error',
+        message: 'Route not found'
+    });
+});
 
 app.listen(5000, () => console.log("server running port 5000"));
