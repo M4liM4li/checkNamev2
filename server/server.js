@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
 const attendanceRouter = require("./routes/attendanceRouter");
+
 //middleware
 app.use(morgan("dev"));
 app.use(express.json());
