@@ -4,22 +4,24 @@ exports.attendance = async (req, res) => {
   try {
     const { stdcode } = req.body;
 
-    // ตรวจสอบว่า stdcode ถูกส่งมาหรือไม่
     if (!stdcode) {
-      return res.status(400).json({ message: "stdcode is required" });
+      return {
+        status: 400,
+        data: { message: "stdcode is required" }
+      };
     }
 
-    // ค้นหา User ที่มี stdcode ตรงกัน
     const user = await prisma.user.findFirst({
       where: { stdcode },
     });
 
-    // หากไม่พบ User ที่มี stdcode ตรงกัน
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return {
+        status: 404,
+        data: { message: "User not found" }
+      };
     }
 
-    // ตรวจสอบว่ามี attendance สำหรับ user นี้อยู่แล้วหรือไม่
     const check = await prisma.attendance.findFirst({
       where: {
         userID: user.id,
@@ -27,24 +29,32 @@ exports.attendance = async (req, res) => {
     });
 
     if (check) {
-      return res.status(400).json({ message: "Attendance already exists" });
+      return {
+        status: 400,
+        data: { message: "Attendance already exists" }
+      };
     }
 
-    // สร้าง Attendance ใหม่ พร้อมกำหนดสถานะเป็น "present" (สามารถปรับให้เป็น "absent" ได้ถ้าจำเป็น)
     await prisma.attendance.create({
       data: {
         userID: user.id,
-        status: true, // "true" หมายถึง present
+        status: true,
       },
     });
 
-    res.status(201).json({ message: "Attendance registered successfully" });
+    return {
+      status: 201,
+      data: { message: "Attendance registered successfully" }
+    };
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    return {
+      status: 500,
+      data: { message: "Server error" }
+    };
   }
 };
-
 exports.listUsers = async (req, res) => {
   try {
     const userId = req.user.id;
