@@ -19,8 +19,9 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
 
-app.use("/api", authRouter);
-app.use("/api", attendanceRouter);
+readdirSync("./routes").map((item) =>
+  app.use("/api", require("./routes/" + item))
+);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({
