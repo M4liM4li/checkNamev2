@@ -34,7 +34,7 @@ const Teacher = () => {
       formData.append("file", blob, "photo.jpg");
 
       // ส่งข้อมูลไปยัง server
-      const res = await fetch("https://super-secretly-albacore.ngrok-free.app/compare-face", {
+      const res = await fetch("https://3cae-223-207-236-186.ngrok-free.app/compare-face", {
         method: "POST",
         body: formData,
       });
