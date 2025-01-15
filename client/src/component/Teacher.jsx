@@ -56,7 +56,9 @@ const Teacher = () => {
             />
           )}
         </div>
-
+        <h2 className={style.fullname}>{userInfo.fullname}</h2>
+        <h3 className={style.department}>{userInfo.department}</h3>
+        
         <div className={style.buttonContainer}>
           {!isUsingCamera ? (
             <button className={style.button} onClick={() => setIsUsingCamera(true)}>
@@ -89,9 +91,7 @@ const Teacher = () => {
           )}
         </div>
 
-        <h2 className={style.fullname}>{userInfo.fullname}</h2>
-
-        <h3 className={style.department}>{userInfo.department}</h3>
+        
       </div>
     </div>
   );
