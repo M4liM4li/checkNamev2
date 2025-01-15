@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import style from "../style/Teacher.module.css";
 import { Camera } from "react-camera-pro";
 
-const Home = () => {
+const Teacher = () => {
   const camera = useRef(null);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [image, setImage] = useState(null);
@@ -102,4 +102,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Teacher;
