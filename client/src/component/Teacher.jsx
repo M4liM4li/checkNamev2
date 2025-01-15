@@ -27,18 +27,28 @@ const Teacher = () => {
   const sendImageToServer = async (photo) => {
     try {
       const formData = new FormData();
+
       // เปลี่ยนรูปภาพจาก base64 หรือ URL เป็น Blob
       const response = await fetch(photo);
       const blob = await response.blob();
 
+      // ตรวจสอบขนาดของไฟล์ก่อนส่ง
+      console.log("Photo Blob size:", blob.size); // ตรวจสอบขนาดของไฟล์ก่อนส่ง
+
       // เพิ่มไฟล์ลงใน formData
       formData.append("image", blob, "photo.jpg");
 
+      // ตรวจสอบ content ของ formData
+      console.log("FormData content:", formData.get("image"));
+
       // ส่งข้อมูลไปยัง server
-      const res = await fetch("https://3cae-223-207-236-186.ngrok-free.app/compare-face", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://3cae-223-207-236-186.ngrok-free.app/compare-face",
+        {
+          method: "POST",
+          body: formData, // ไม่ต้องตั้ง Content-Type ด้วยตัวเอง
+        }
+      );
 
       const result = await res.json();
       console.log(result);
