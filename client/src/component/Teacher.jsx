@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import style from "../style/Teacher.module.css";
+import React, { useState, useRef } from "react";
 import { Camera } from "react-camera-pro";
+import style from "../style/Teacher.module.css";
 
 const Teacher = () => {
   const camera = useRef(null);
@@ -13,7 +12,6 @@ const Teacher = () => {
     fullname: "ศิวกร",
     department: "แผนกเทคโนโลยีสารสนเทศ",
   };
-  // แยกส่วนแสดงข้อมูลผู้ใช้
 
   const handleTakePhoto = () => {
     if (camera.current) {
@@ -24,11 +22,11 @@ const Teacher = () => {
   };
 
   return (
-    <div style={style.container}>
-      <div style={style.content}>
-        <div style={style.question}>
+    <div className={style.container}>
+      <div className={style.content}>
+        <div className={style.question}>
           {isUsingCamera ? (
-            <div style={style.cameraContainer}>
+            <div className={style.cameraContainer}>
               <Camera
                 ref={camera}
                 numberOfCamerasCallback={setNumberOfCameras}
@@ -46,13 +44,13 @@ const Teacher = () => {
             <img
               src={image}
               alt={userInfo?.fullname || "Profile"}
-              style={style.questionImg}
+              className={style.questionImg}
             />
           ) : (
             <img
               src="/assets/default-profile.png"
               alt={userInfo?.fullname || "Profile"}
-              style={style.questionImg}
+              className={style.questionImg}
               onError={(e) => {
                 e.target.src = "/assets/default-profile.png";
               }}
@@ -60,19 +58,19 @@ const Teacher = () => {
           )}
         </div>
 
-        <div style={style.buttonContainer}>
+        <div className={style.buttonContainer}>
           {!isUsingCamera ? (
-            <button style={style.button} onClick={() => setIsUsingCamera(true)}>
+            <button className={style.button} onClick={() => setIsUsingCamera(true)}>
               เปิดกล้อง
             </button>
           ) : (
             <>
-              <button style={style.button} onClick={handleTakePhoto}>
+              <button className={style.button} onClick={handleTakePhoto}>
                 ถ่ายรูป
               </button>
               {numberOfCameras > 1 && (
                 <button
-                  style={style.button}
+                  className={style.button}
                   onClick={() => {
                     if (camera.current) {
                       camera.current.switchCamera();
@@ -83,7 +81,7 @@ const Teacher = () => {
                 </button>
               )}
               <button
-                style={style.button}
+                className={style.button}
                 onClick={() => setIsUsingCamera(false)}
               >
                 ยกเลิก
@@ -92,11 +90,9 @@ const Teacher = () => {
           )}
         </div>
 
-        <h2 style={{ color: "#16FF0A" }}>{userInfo.fullname}</h2>
+        <h2 className={style.fullname}>{userInfo.fullname}</h2>
 
-        <h3 style={{ color: "#FF0A0E", ...style.contentH3 }}>
-          {userInfo.department}
-        </h3>
+        <h3 className={style.department}>{userInfo.department}</h3>
       </div>
     </div>
   );
