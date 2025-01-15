@@ -18,7 +18,7 @@ const Teacher = () => {
       const photo = camera.current.takePhoto();
       setImage(photo);
       setIsUsingCamera(false);
-      
+
       // ส่งรูปภาพไปยัง server สำหรับประมวลผล
       sendImageToServer(photo);
     }
@@ -28,16 +28,21 @@ const Teacher = () => {
     try {
       const formData = new FormData();
       // เปลี่ยนรูปภาพจาก URL (base64) เป็น Blob (ต้องการส่งไป server)
+      // สร้าง Blob จาก Base64 หรือ URL ของภาพ
       const response = await fetch(photo);
       const blob = await response.blob();
 
+      // เพิ่มไฟล์ลงใน formData
       formData.append("file", blob, "photo.jpg");
 
       // ส่งข้อมูลไปยัง server
-      const res = await fetch("https://3cae-223-207-236-186.ngrok-free.app/compare-face", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://3cae-223-207-236-186.ngrok-free.app/compare-face",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await res.json();
       console.log(result); // ตรวจสอบผลลัพธ์จาก server
@@ -88,10 +93,13 @@ const Teacher = () => {
         </div>
         <h2 className={style.fullname}>{userInfo.fullname}</h2>
         <h3 className={style.department}>{userInfo.department}</h3>
-        
+
         <div className={style.buttonContainer}>
           {!isUsingCamera ? (
-            <button className={style.button} onClick={() => setIsUsingCamera(true)}>
+            <button
+              className={style.button}
+              onClick={() => setIsUsingCamera(true)}
+            >
               เปิดกล้อง
             </button>
           ) : (
