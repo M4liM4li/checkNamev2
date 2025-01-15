@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+server/vercel.jsonimport { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/

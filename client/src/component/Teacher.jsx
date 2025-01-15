@@ -48,7 +48,6 @@ const Teacher = () => {
             />
           ) : (
             <img
-              src="/assets/default-profile.png"
               alt={userInfo?.fullname || "Profile"}
               className={style.questionImg}
               onError={(e) => {
