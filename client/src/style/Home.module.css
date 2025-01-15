@@ -27,7 +27,8 @@
   margin: 0 auto 20px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom:50px;
+  background-color: black;
 }
 
 .question img {
@@ -150,3 +151,6 @@
   top: 0px;
   left: 40px;
 }
+
+
+/* CSS */

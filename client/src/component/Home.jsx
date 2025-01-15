@@ -111,10 +111,13 @@ const Home = () => {
                     {record.status === "present" ? "เข้าแถว" : "ยังไม่เช็คชื่อ"}
                   </h2>
                   <h4>{new Date(record.time).toLocaleString("th-TH")}</h4>
+
                 </li>
               ))}
+
             </ul>
           </div>
+          
         )}
       </div>
     </div>
