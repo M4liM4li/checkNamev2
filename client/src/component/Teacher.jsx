@@ -18,6 +18,36 @@ const Teacher = () => {
       const photo = camera.current.takePhoto();
       setImage(photo);
       setIsUsingCamera(false);
+      
+      // ส่งรูปภาพไปยัง server สำหรับประมวลผล
+      sendImageToServer(photo);
+    }
+  };
+
+  const sendImageToServer = async (photo) => {
+    try {
+      const formData = new FormData();
+      // เปลี่ยนรูปภาพจาก URL (base64) เป็น Blob (ต้องการส่งไป server)
+      const response = await fetch(photo);
+      const blob = await response.blob();
+
+      formData.append("file", blob, "photo.jpg");
+
+      // ส่งข้อมูลไปยัง server
+      const res = await fetch("https://super-secretly-albacore.ngrok-free.app/compare-face", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await res.json();
+      console.log(result); // ตรวจสอบผลลัพธ์จาก server
+      if (result.success) {
+        alert("การประมวลผลเสร็จสมบูรณ์");
+      } else {
+        alert("การประมวลผลไม่สำเร็จ");
+      }
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาดในการส่งรูปภาพ:", error);
     }
   };
 
@@ -90,8 +120,6 @@ const Teacher = () => {
             </>
           )}
         </div>
-
-        
       </div>
     </div>
   );
