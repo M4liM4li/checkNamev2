@@ -7,8 +7,6 @@ const Teacher = () => {
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [image, setImage] = useState(null);
   const [isUsingCamera, setIsUsingCamera] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [detectedName, setDetectedName] = useState("");
 
   const userInfo = {
     fullname: "ศิวกร",
@@ -30,26 +28,30 @@ const Teacher = () => {
     try {
       const formData = new FormData();
 
+      // เปลี่ยนรูปภาพจาก base64 หรือ URL เป็น Blob
       const response = await fetch(photo);
       const blob = await response.blob();
+
+      // ตรวจสอบขนาดของไฟล์ก่อนส่ง
+      console.log("Photo Blob size:", blob.size); // ตรวจสอบขนาดของไฟล์ก่อนส่ง
+
+      // เพิ่มไฟล์ลงใน formData
       formData.append("image", blob, "photo.jpg");
 
+      // ตรวจสอบ content ของ formData
+      console.log("FormData content:", formData.get("image"));
+
+      // ส่งข้อมูลไปยัง server
       const res = await fetch(
         "https://stable-airedale-powerful.ngrok-free.app/compare-face",
         {
           method: "POST",
-          body: formData,
+          body: formData, // ไม่ต้องตั้ง Content-Type ด้วยตัวเอง
         }
       );
 
       const result = await res.json();
       console.log(result);
-
-      // ตั้งชื่อที่หาเจอใน Popup
-      if (result && result.name) {
-        setDetectedName(result.name);
-        setPopupVisible(true); // แสดง Popup
-      }
     } catch (error) {
       console.error("เกิดข้อผิดพลาดในการส่งรูปภาพ:", error);
     }
@@ -128,22 +130,6 @@ const Teacher = () => {
           )}
         </div>
       </div>
-
-      {/* Modal Popup */}
-      {popupVisible && (
-        <div className={style.modalOverlay}>
-          <div className={style.modalContent}>
-            <h2>พบชื่อในระบบ</h2>
-            <p>ชื่อ: {detectedName}</p>
-            <button
-              className={style.button}
-              onClick={() => setPopupVisible(false)}
-            >
-              ปิด
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
