@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../style/Home.module.css";
 import Swal from "sweetalert2";
-
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
@@ -11,6 +10,10 @@ const Home = () => {
   const navigate = useNavigate();
   const previousLength = useRef(0);
   const isFirstLoad = useRef(true);
+
+  const cloudinaryUrl = "https://res.cloudinary.com/dwyxrfpal/image/upload/";
+
+
 
   const fetchUserData = async () => {
     try {
@@ -53,7 +56,6 @@ const Home = () => {
               title: "แจ้งเตือนการเช็คชื่อ",
               text: `เช็คชื่อแล้ว`,
               timer: 1500,
-              showConfirmButton: false,
             });
           }
           setAttendanceRecords(data.attendanceRecords);
@@ -86,7 +88,7 @@ const Home = () => {
     <>
       <div className={style.question}>
         <img
-          src={`/assets/${userInfo?.image}`}
+          src={`${cloudinaryUrl}/profile/${userInfo?.image}`} 
           alt={userInfo?.fullname || "Profile"}
           onError={(e) => {
             e.target.src = "/assets/default-profile.png";
