@@ -11,14 +11,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "https://check-namev2-serverx.vercel.app/api/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch("https://check-namev2-serverx.vercel.app/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
       const data = await response.json();
 
@@ -30,20 +27,20 @@ const Login = () => {
 
       // เมื่อเข้าสู่ระบบสำเร็จ
       if (data.success) {
-        // บันทึกข้อมูลผู้ใช้และ Token
-        localStorage.setItem("user", JSON.stringify(data.user)); // เก็บข้อมูลผู้ใช้
-        localStorage.setItem("token", data.token); // เก็บ Token
-
+        sessionStorage.setItem("user", JSON.stringify(data.user)); // เก็บข้อมูลผู้ใช้
+        sessionStorage.setItem("token", data.token); // เก็บ Token
+      
         if (data.user.role === "teacher") {
           navigate("/Teacher");
         } else {
           navigate("/Home");
         }
+      
       } else {
         setError(data.message || "ข้อมูลไม่ถูกต้อง"); // แสดงข้อความผิดพลาด
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
       setError("เกิดข้อผิดพลาดในการเชื่อมต่อ"); // ข้อความข้อผิดพลาดเมื่อเกิดข้อผิดพลาดในการเชื่อมต่อ
     }
   };
