@@ -200,3 +200,8 @@ body {
 .content button:hover {
     transform: scale(1.05);
 }
+.small-alert {
+    font-size: 14px; /* ปรับขนาดตัวอักษร */
+    padding: 10px;   /* ลดระยะห่าง */
+  }
+  

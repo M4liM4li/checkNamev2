@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // เพิ่มการนำเข้า SweetAlert2
 import style from "../style/Login.module.css";
 
 const Login = () => {
@@ -11,37 +12,45 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://check-namev2-serverx.vercel.app/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://check-namev2-serverx.vercel.app/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       const data = await response.json();
 
-      // ตรวจสอบสถานะของการตอบกลับ
       if (!response.ok) {
         setError(data.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ");
         return;
       }
 
-      // เมื่อเข้าสู่ระบบสำเร็จ
       if (data.success) {
-        sessionStorage.setItem("user", JSON.stringify(data.user)); // เก็บข้อมูลผู้ใช้
-        sessionStorage.setItem("token", data.token); // เก็บ Token
-      
+        sessionStorage.setItem("user", JSON.stringify(data.user));
+        sessionStorage.setItem("token", data.token);
+
+        // แสดงข้อความแจ้งเตือนเมื่อเข้าสู่ระบบสำเร็จ
+        Swal.fire({
+          icon: "success",
+          title: "เข้าสู่ระบบสำเร็จ",
+          text: `ยินดีต้อนรับ`,
+          timer: 1200,
+        });
+        // หลังจากผู้ใช้กด "ตกลง" จะนำไปยังหน้าอื่น
         if (data.user.role === "teacher") {
           navigate("/Teacher");
         } else {
           navigate("/Home");
         }
-      
       } else {
-        setError(data.message || "ข้อมูลไม่ถูกต้อง"); // แสดงข้อความผิดพลาด
+        setError(data.message || "ข้อมูลไม่ถูกต้อง");
       }
     } catch (err) {
-      console.log(err)
-      setError("เกิดข้อผิดพลาดในการเชื่อมต่อ"); // ข้อความข้อผิดพลาดเมื่อเกิดข้อผิดพลาดในการเชื่อมต่อ
+      console.log(err);
+      setError("เกิดข้อผิดพลาดในการเชื่อมต่อ");
     }
   };
 

@@ -7,7 +7,7 @@ exports.attendance = async (req, res) => {
     if (!stdcode) {
       return {
         status: 400,
-        data: { message: "stdcode is required" }
+        data: { message: "stdcode is required" },
       };
     }
 
@@ -18,7 +18,7 @@ exports.attendance = async (req, res) => {
     if (!user) {
       return {
         status: 404,
-        data: { message: "User not found" }
+        data: { message: "User not found" },
       };
     }
 
@@ -31,7 +31,7 @@ exports.attendance = async (req, res) => {
     if (check) {
       return {
         status: 400,
-        data: { message: "Attendance already exists" }
+        data: { message: "Attendance already exists" },
       };
     }
 
@@ -44,14 +44,13 @@ exports.attendance = async (req, res) => {
 
     return {
       status: 201,
-      data: { message: "Attendance registered successfully" }
+      data: { message: "Attendance registered successfully" },
     };
-
   } catch (err) {
     console.error(err);
     return {
       status: 500,
-      data: { message: "Server error" }
+      data: { message: "Server error" },
     };
   }
 };
@@ -63,7 +62,6 @@ exports.listUsers = async (req, res) => {
         .status(401)
         .json({ message: "Unauthorized: User not logged in" });
     }
-
     // ดึงข้อมูลผู้ใช้
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -74,7 +72,6 @@ exports.listUsers = async (req, res) => {
         image: true,
       },
     });
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -90,18 +87,10 @@ exports.listUsers = async (req, res) => {
       orderBy: { createdAt: "desc" },
       take: 10,
     });
-
-    res.json({
-      success: true,
-      user: user,
-      attendanceRecords: attendance.map((record) => ({
-        attendanceId: record.id,
-        status: record.status ? "present" : "absent",
-        time: record.createdAt.toISOString(),
-      })),
-    });
+    console.log(attendance);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
   }
 };
+exports.attendaceList = async (req, res) => {};

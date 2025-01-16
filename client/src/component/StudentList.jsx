@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../style/Home.module.css";
-import Swal from "sweetalert2";
 
-const Home = () => {
+const StudentList = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const previousLength = useRef(0);
-  const isFirstLoad = useRef(true);
 
   const fetchUserData = async () => {
     try {
@@ -22,14 +19,11 @@ const Home = () => {
         return;
       }
 
-      const response = await fetch(
-        `https://check-namev2-serverx.vercel.app/api/listUsers`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`https://check-namev2-serverx.vercel.app/api/listUsers`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -38,26 +32,12 @@ const Home = () => {
       const data = await response.json();
 
       if (data.success) {
+        // แยกการเซ็ตข้อมูลผู้ใช้และข้อมูลการเช็คชื่อ
         if (data.user) {
           setUserInfo(data.user);
         }
         if (data.attendanceRecords) {
-          // ตรวจสอบว่ามีข้อมูลใหม่หรือไม่
-          if (
-            !isFirstLoad.current &&
-            data.attendanceRecords.length > previousLength.current
-          ) {
-            // มีข้อมูลใหม่เข้ามา
-            Swal.fire({
-              icon: "success",
-              title: "แจ้งเตือนการเช็คชื่อ",
-              text: `เช็คชื่อแล้ว`,
-              timer: 1500,
-              showConfirmButton: false,
-            });
-          }
           setAttendanceRecords(data.attendanceRecords);
-          previousLength.current = data.attendanceRecords.length;
         }
       } else {
         setError(data.message);
@@ -66,9 +46,6 @@ const Home = () => {
       setError(error.message);
     } finally {
       setIsLoading(false);
-      if (isFirstLoad.current) {
-        isFirstLoad.current = false;
-      }
     }
   };
 
@@ -86,6 +63,7 @@ const Home = () => {
     return <div className={style.error}>{error}</div>;
   }
 
+  // แยกส่วนแสดงข้อมูลผู้ใช้
   const UserProfile = () => (
     <>
       <div className={style.question}>
@@ -97,14 +75,11 @@ const Home = () => {
           }}
         />
       </div>
-      <h2 className={style.fullname} style={{ color: "#16FF0A" }}>
-        {userInfo?.fullname}
-      </h2>
-      <h3 className={style.department} style={{ color: "#FF0A0E" }}>
-        แผนกเทคโนโลยีสารสนเทศ
-      </h3>
+      <h2 className={style.fullname} style={{ color: "#16FF0A" }}>{userInfo?.fullname}</h2>
+      <h3 className={style.department}style={{ color: "#FF0A0E" }}>แผนกเทคโนโลยีสารสนเทศ</h3>
     </>
   );
+
   return (
     <div className={style.container}>
       <div className={style.content}>
@@ -133,17 +108,20 @@ const Home = () => {
                       record.status === "present" ? style.present : style.absent
                     }
                   >
-                    {record.status === "present" ? "เข้าแถว" : "ยังไม่เช็คชื่อ"}
+                    {record.status === "present" ? "เช็คชื่อแล้ว" : "ยังไม่เช็คชื่อ"}
                   </h2>
                   <h4>{new Date(record.time).toLocaleString("th-TH")}</h4>
+
                 </li>
               ))}
+
             </ul>
           </div>
+          
         )}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default StudentList;
