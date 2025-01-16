@@ -43,7 +43,7 @@ const Teacher = () => {
 
       // ส่งข้อมูลไปยัง server
       const res = await fetch(
-        "https://stable-airedale-powerful.ngrok-free.app/compare-face",
+        "https://hacklerx.pythonanywhere.com/compare-face",
         {
           method: "POST",
           body: formData, // ไม่ต้องตั้ง Content-Type ด้วยตัวเอง
