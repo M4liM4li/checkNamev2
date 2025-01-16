@@ -77,11 +77,7 @@ const Home = () => {
     const interval = setInterval(fetchUserData, 3000);
     return () => clearInterval(interval);
   }, [navigate]);
-
-  if (isLoading) {
-    return <div className={style.loading}>กำลังโหลดข้อมูล...</div>;
-  }
-
+  
   if (error) {
     return <div className={style.error}>{error}</div>;
   }
