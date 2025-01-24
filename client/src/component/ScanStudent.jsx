@@ -38,7 +38,7 @@ const ScanStudent = () => {
 
       // ส่งข้อมูลไปยัง server
       const res = await fetch(
-        "https://adminhacklerx.pythonanywhere.com/compare-face",
+        "https://stable-airedale-powerful.ngrok-free.app/compare-face",
         {
           method: "POST",
           body: formData, // ไม่ต้องตั้ง Content-Type ด้วยตัวเอง
