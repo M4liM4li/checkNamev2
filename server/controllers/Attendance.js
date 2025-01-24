@@ -107,10 +107,6 @@ exports.listUsers = async (req, res) => {
 exports.listname = async (req, res) => {
   try {
     const name = await prisma.Attendance.findMany({
-      select: {
-        createdAt: true,
-        status: true,
-      },
       include: {
         user: {
           select: {
@@ -121,7 +117,6 @@ exports.listname = async (req, res) => {
         },
       },
     });
-
     res.send(name);
   } catch (err) {
     res.status(500).json({ error: err.message });
