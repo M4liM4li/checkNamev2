@@ -14,7 +14,7 @@ const StudentList = () => {
         const data = await response.json();
         setStudents(data);
       } catch (error) {
-        console.error("Failed to fetch students:", error);
+        console.error("Failed to fetch studentsx:", error);
       }
     };
 
