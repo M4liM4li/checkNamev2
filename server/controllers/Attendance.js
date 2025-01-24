@@ -108,8 +108,10 @@ exports.listname = async (req, res) => {
   try {
     const name = await prisma.Attendance.findMany({
       include: {
-        createdAt: true,
-        status: true,
+        select: {
+          createdAt: true,
+          status: true,
+        },
         user: {
           select: {
             id: true,
