@@ -105,7 +105,7 @@ const Home = () => {
   );
   return (
     <div className={style.container}>
-    <img className={style.imgBackground} src="../../public/5717098.png" alt="" />
+    <img className={style.imgBackground} src={`${cloudinaryUrl}/5717098_wufp8u.png`}  alt="Background" />
       <div className={style.content}>
         {/* แสดงข้อมูลผู้ใช้เสมอถ้ามีข้อมูล */}
         {userInfo && <UserProfile />}

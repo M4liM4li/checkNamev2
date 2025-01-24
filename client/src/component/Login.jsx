@@ -9,6 +9,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const cloudinaryUrl = "https://res.cloudinary.com/dwyxrfpal/image/upload/";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -58,8 +60,8 @@ const Login = () => {
     <div className={style.container}>
       <img
         className={style.imgBackground}
-        src="../../public/5717098.png"
-        alt=""
+        src={`${cloudinaryUrl}/5717098_wufp8u.png`}
+        alt="Background"
       />
 
       <div className={style.sun}></div>
