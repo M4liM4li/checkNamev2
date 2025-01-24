@@ -7,7 +7,7 @@ const StudentList = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch("https://check-namev2-serverx.vercel.app/api/lisstname");
+        const response = await fetch("https://check-namev2-serverx.vercel.app/api/listname");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
