@@ -60,7 +60,7 @@ const Login = () => {
     <div className={style.container}>
       <img
         className={style.imgBackground}
-        src={`${cloudinaryUrl}/5717098_wufp8u.png`}
+        src={`${cloudinaryUrl}/image/5717098_wufp8u.png`}
         alt="Background"
       />
 
