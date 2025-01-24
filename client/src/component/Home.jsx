@@ -95,10 +95,10 @@ const Home = () => {
           }}
         />
       </div>
-      <h2 style={{ color: "#16FF0A" }}>
+      <h2>
         {userInfo?.fullname}
       </h2>
-      <h3 style={{ color: "#FF0A0E" }}>
+      <h3>
         แผนกเทคโนโลยีสารสนเทศ
       </h3>
     </>
