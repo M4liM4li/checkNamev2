@@ -6,9 +6,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
-
+.imgBackground {
+  width: 100%;
+  height: 100vh; /* ปรับให้ภาพมีความสูงเต็มหน้าจอ */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* ให้ภาพอยู่ด้านหลังเนื้อหาทั้งหมด */
+  object-fit: cover; /* ป้องกันการบิดเบือนของภาพ */
+}
 .content {
   background: white;
   padding: 40px;
@@ -16,18 +23,22 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   width: 310px;
   text-align: center;
-  
+  z-index: 1; /* ให้เนื้อหาดูอยู่ด้านหน้า */
 }
-.content h3{
-  font-size: 1rem;
+.content h2 {
+  margin-bottom: -10px;
 }
+.content h3 {
+  padding-bottom: 10px;
+}
+
 .question {
   width: 180px;
   height: 180px;
   margin: 0 auto 20px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom:50px;
+  margin-bottom:20px;
   background-color: black;
 }
 
@@ -54,24 +65,23 @@
   background-color: #FFD700;
   border-radius: 50%;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  z-index: 0; /* อยู่ด้านหลังเนื้อหาของ .content */
 }
-
 .cloud {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 0; /* ให้เมฆอยู่ด้านหลัง */
 }
 
 .cloud {
-  position: absolute;
   width: 80px;
   height: 50px;
   background-color: #FFFFFF;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .cloud:nth-child(1) {
   top: 40px;
   left: 10%;
@@ -152,5 +162,6 @@
   left: 40px;
 }
 
-
-/* CSS */
+.record h2{
+  color:#0a1aff;
+}

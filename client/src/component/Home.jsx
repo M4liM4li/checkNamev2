@@ -95,28 +95,18 @@ const Home = () => {
           }}
         />
       </div>
-      <h2 className={style.fullname} style={{ color: "#16FF0A" }}>
+      <h2 style={{ color: "#16FF0A" }}>
         {userInfo?.fullname}
       </h2>
-      <h3 className={style.department} style={{ color: "#FF0A0E" }}>
+      <h3 style={{ color: "#FF0A0E" }}>
         แผนกเทคโนโลยีสารสนเทศ
       </h3>
     </>
   );
   return (
     <div className={style.container}>
+    <img className={style.imgBackground} src="../../public/5717098.png" alt="" />
       <div className={style.content}>
-        <div className={style.sun}></div>
-        <div className={style.cloud}>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-        </div>
-        <div className={style.cloud}>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-          <div className={style.cloud}></div>
-        </div>
         {/* แสดงข้อมูลผู้ใช้เสมอถ้ามีข้อมูล */}
         {userInfo && <UserProfile />}
 
@@ -131,7 +121,7 @@ const Home = () => {
                       record.status === "present" ? style.present : style.absent
                     }
                   >
-                    {record.status === "present" ? "เข้าแถว" : "ยังไม่เช็คชื่อ"}
+                    {record.status === "present" ? "เช็คชื่อแล้ว" : "ยังไม่เช็คชื่อ"}
                   </h2>
                   <h4>{new Date(record.time).toLocaleString("th-TH")}</h4>
                 </li>

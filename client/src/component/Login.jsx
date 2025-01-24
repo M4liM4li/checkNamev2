@@ -56,6 +56,12 @@ const Login = () => {
 
   return (
     <div className={style.container}>
+      <img
+        className={style.imgBackground}
+        src="../../public/5717098.png"
+        alt=""
+      />
+
       <div className={style.sun}></div>
       <div className={style.cloud}>
         <div className={style.cloud}></div>
