@@ -7,7 +7,7 @@ exports.attendance = async (req, res) => {
     if (!stdcode) {
       return {
         status: 400,
-        data: { message: "stdcode is required" }
+        data: { message: "stdcode is required" },
       };
     }
 
@@ -18,7 +18,7 @@ exports.attendance = async (req, res) => {
     if (!user) {
       return {
         status: 404,
-        data: { message: "User not found" }
+        data: { message: "User not found" },
       };
     }
 
@@ -31,7 +31,7 @@ exports.attendance = async (req, res) => {
     if (check) {
       return {
         status: 400,
-        data: { message: "Attendance already exists" }
+        data: { message: "Attendance already exists" },
       };
     }
 
@@ -44,14 +44,13 @@ exports.attendance = async (req, res) => {
 
     return {
       status: 201,
-      data: { message: "Attendance registered successfully" }
+      data: { message: "Attendance registered successfully" },
     };
-
   } catch (err) {
     console.error(err);
     return {
       status: 500,
-      data: { message: "Server error" }
+      data: { message: "Server error" },
     };
   }
 };
@@ -109,13 +108,13 @@ exports.listname = async (req, res) => {
   try {
     const name = await prisma.Attendance.findMany({
       include: {
+        createdAt: true,
+        status: true,
         user: {
           select: {
             id: true,
             stdcode: true,
             fullname: true,
-            createdAt: true,
-            status: true,
           },
         },
       },
