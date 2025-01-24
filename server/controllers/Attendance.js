@@ -115,6 +115,7 @@ exports.listname = async (req, res) => {
             stdcode: true,
             fullname: true,
             createdAt: true,
+            status: true,
           },
         },
       },
