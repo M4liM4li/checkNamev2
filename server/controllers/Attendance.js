@@ -114,6 +114,7 @@ exports.listname = async (req, res) => {
             id: true,
             stdcode: true,
             fullname: true,
+            createdAt: true,
           },
         },
       },
