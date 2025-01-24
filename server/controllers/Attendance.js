@@ -105,3 +105,22 @@ exports.listUsers = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+exports.listname = async (req, res) => {
+  try {
+    const name = await prisma.Attendance.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            fullname: true,
+          },
+        },
+      },
+    });
+
+    res.send(name);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

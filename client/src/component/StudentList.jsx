@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import style from "../style/StudentList.module.css";
 
 const StudentList = () => {
-  const students = [
-    { id: 1, name: "ศิวกร กนกสิงห์", status: "เข้าแถวแล้ว", time: "09:30" },
-    { id: 2, name: "กานต์ สารินทร์", status: "ยังไม่เข้าแถว", time: null },
-    { id: 3, name: "นภัสสร นพคุณ", status: "ยังไม่เข้าแถว", time: null },
-    { id: 4, name: "ภูริ ทองคำ", status: "ยังไม่เข้าแถว", time: null },
-  ];
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch("https://check-namev2-serverx.vercel.app/api/lisstname");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setStudents(data);
+      } catch (error) {
+        console.error("Failed to fetch students:", error);
+      }
+    };
+
+    fetchStudents();
+  }, []);
 
   return (
     <div className={style.container}>
@@ -16,7 +28,9 @@ const StudentList = () => {
         <ul>
           {students.map((student) => (
             <li key={student.id} className={style.li}>
-              <span className={style.name}>{student.id} {student.name}</span>
+              <span className={style.name}>
+                {student.id} {student.name}
+              </span>
               <span className={style.status}>
                 {student.status}
                 {student.time && ` ${student.time}`}
