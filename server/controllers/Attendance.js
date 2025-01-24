@@ -112,7 +112,7 @@ exports.listname = async (req, res) => {
         user: {
           select: {
             id: true,
-            username: true,
+            stdcode: true,
             fullname: true,
           },
         },
