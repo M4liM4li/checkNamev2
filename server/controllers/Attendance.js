@@ -107,6 +107,10 @@ exports.listUsers = async (req, res) => {
 exports.listname = async (req, res) => {
   try {
     const name = await prisma.Attendance.findMany({
+      select: {
+        createdAt: true,
+        status: true,
+      },
       include: {
         user: {
           select: {
@@ -115,10 +119,6 @@ exports.listname = async (req, res) => {
             fullname: true,
           },
         },
-      },
-      select: {
-        createdAt: true,
-        status: true,
       },
     });
 
