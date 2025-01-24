@@ -79,7 +79,7 @@ const Home = () => {
     const interval = setInterval(fetchUserData, 3000);
     return () => clearInterval(interval);
   }, [navigate]);
-  
+
   if (error) {
     return <div className={style.error}>{error}</div>;
   }
